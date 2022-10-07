@@ -4,3 +4,4 @@ bin
 .vscode
 .idea
 *.log
+Logs

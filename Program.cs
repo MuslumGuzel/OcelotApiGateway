@@ -1,7 +1,14 @@
+using ApiGateway.Middlewares;
+using ApiGateway.Models;
+using ApiGateway.Services;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Serilog;
+using Serilog.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<LogDatabaseSettings>(builder.Configuration.GetSection("LogStoreDatabase"));
 
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true )
@@ -11,11 +18,13 @@ builder.WebHost.UseUrls("http://localhost:7000");
 // Add services to the container.
 
 builder.Services.AddControllers();
-//builder.Services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 builder.Services.AddOcelot(builder.Configuration);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<ILogsService, LogsService>();
+
+Logger log = new LoggerConfiguration().WriteTo.File($@"Logs/Log_{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.txt", rollingInterval: RollingInterval.Day).WriteTo.Console().CreateLogger();
+builder.Host.UseSerilog(log);
 
 var app = builder.Build();
 
@@ -27,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
 app.UseAuthorization();
 

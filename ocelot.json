@@ -40,21 +40,21 @@
             "DownstreamHostAndPorts" : [
                 {
                     "Host" : "localhost",
-                    "Port" : 8801
+                    "Port" : 8800
                 }
             ],
-            "UpstreamPathTemplate": "/v1/user-service/user"
+            "UpstreamPathTemplate": "/user-service/user"
         },
         {
-            "DownstreamPathTemplate" : "/api/users",
+            "DownstreamPathTemplate" : "/getposts",
             "DownstreamScheme" : "http",
             "DownstreamHostAndPorts" : [
                 {
                     "Host" : "localhost",
-                    "Port" : 8800
+                    "Port" : 8801
                 }
             ],
-            "UpstreamPathTemplate": "/v2/user-service/user"
+            "UpstreamPathTemplate": "/post-service/getposts"
         }
     ],
     "GlobalConfiguration" : {
