@@ -1,0 +1,8 @@
+﻿obj
+bin
+.vs
+.vscode
+.idea
+*.log
+Logs
+appsettings.*
