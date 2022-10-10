@@ -16,7 +16,8 @@
             "UpstreamPathTemplate": "/customer-service/customer",
             "UpstreamHttpMethod": [
                 "Get"
-            ]
+            ],
+            "Key": "Customer"            
         },
         {
             "DownstreamPathTemplate": "/api/product",
@@ -68,10 +69,32 @@
                 "Limit": 1,
                 "HttpStatusCode": 429
             },
-            "UpstreamPathTemplate": "/post-service/getposts"
+            "UpstreamPathTemplate": "/post-service/getposts",
+            "Key": "GetPost"
+        },
+        {
+            "DownstreamPathTemplate": "/auth/sign-in",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7003
+                }
+            ],
+            "UpstreamPathTemplate": "/token-service/token",
+            "UpstreamHttpMethod":[
+                "Post"
+            ]
+        }
+    ],
+    "Aggregates":[
+        {
+            "RouteKeys": ["Customer", "GetPost"],
+            "UpstreamPathTemplate": "/customer-with-getpost"
         }
     ],
     "GlobalConfiguration": {
+        "RequestIdKey":"X-Correlation-Id",
         "BaseUrl": "http://localhost:7000"
     }
 }
