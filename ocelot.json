@@ -4,60 +4,74 @@
             "DownstreamPathTemplate": "/api/customer",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
-                    {
-                        "Host": "localhost",
-                        "Port": 7001
-                    }
-                ],
+                {
+                    "Host": "localhost",
+                    "Port": 7001
+                }
+            ],
+            "FileCacheOptions": {
+                "TtlSeconds": 30,
+                "Region": "customercaching"
+            },
             "UpstreamPathTemplate": "/customer-service/customer",
-            "UpstreamHttpMethod": [ "Get" ]
+            "UpstreamHttpMethod": [
+                "Get"
+            ]
         },
         {
-            "DownstreamPathTemplate" : "/api/product",
-            "DownstreamScheme" : "http",
-            "DownstreamHostAndPorts" : [
+            "DownstreamPathTemplate": "/api/product",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
                 {
-                    "Host" : "localhost",
-                    "Port" : 7002
+                    "Host": "localhost",
+                    "Port": 7002
                 }
             ],
             "UpstreamPathTemplate": "/product-service/product"
         },
         {
-            "DownstreamPathTemplate" : "/api/menu",
-            "DownstreamScheme" : "http",
-            "DownstreamHostAndPorts" : [
+            "DownstreamPathTemplate": "/api/menu",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
                 {
-                    "Host" : "localhost",
-                    "Port" : 7002
+                    "Host": "localhost",
+                    "Port": 7002
                 }
             ],
             "UpstreamPathTemplate": "/menu-service/menu"
         },
         {
-            "DownstreamPathTemplate" : "/api/users",
-            "DownstreamScheme" : "http",
-            "DownstreamHostAndPorts" : [
+            "DownstreamPathTemplate": "/api/users",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
                 {
-                    "Host" : "localhost",
-                    "Port" : 8800
+                    "Host": "localhost",
+                    "Port": 8800
                 }
             ],
             "UpstreamPathTemplate": "/user-service/user"
         },
         {
-            "DownstreamPathTemplate" : "/getposts",
-            "DownstreamScheme" : "http",
-            "DownstreamHostAndPorts" : [
+            "DownstreamPathTemplate": "/getposts",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
                 {
-                    "Host" : "localhost",
-                    "Port" : 8801
+                    "Host": "localhost",
+                    "Port": 8801
                 }
             ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "5s",
+                "PeriodTimespan": 1,
+                "Limit": 1,
+                "HttpStatusCode": 429
+            },
             "UpstreamPathTemplate": "/post-service/getposts"
         }
     ],
-    "GlobalConfiguration" : {
-        "BaseUrl" : "http://localhost:7000"
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:7000"
     }
 }

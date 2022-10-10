@@ -3,6 +3,7 @@ using ApiGateway.Models;
 using ApiGateway.Services;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Cache.CacheManager;
 using Serilog;
 using Serilog.Core;
 
@@ -18,7 +19,10 @@ builder.WebHost.UseUrls("http://localhost:7000");
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddOcelot(builder.Configuration);
+builder.Services.AddOcelot(builder.Configuration)
+    .AddCacheManager(x => {
+        x.WithDictionaryHandle();
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ILogsService, LogsService>();
