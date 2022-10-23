@@ -17,7 +17,11 @@
             "UpstreamHttpMethod": [
                 "Get"
             ],
-            "Key": "Customer"            
+            "Key": "Customer",
+            "AuthenticationOptions":{
+                "AuthenticationProviderKey": "OhKJj0rd02sQcylobnu9lAp4u++fSYuRHZ/xV9z4JB4=",
+                "AllowedScopes" : []
+            }            
         },
         {
             "DownstreamPathTemplate": "/api/product",

@@ -6,6 +6,9 @@ using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
 using Serilog;
 using Serilog.Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ILogsService, LogsService>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = builder.Configuration.GetValue<string>("Audience:AuthenticateSecretKey");
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(builder.Configuration.GetValue<string>("Audience:AuthenticateSecretKey"), options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Audience:SecretKey"))),
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration.GetValue<string>("Audience:Iss"),
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration.GetValue<string>("Audience:Aud"),
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        RequireExpirationTime = true,
+    };
+});
+
 Logger log = new LoggerConfiguration().WriteTo.File($@"Logs/Log_{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.txt", rollingInterval: RollingInterval.Day).WriteTo.Console().CreateLogger();
 builder.Host.UseSerilog(log);
 
@@ -44,7 +69,7 @@ app.UseHttpsRedirection();
 app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
 app.UseAuthorization();
-
+app.UseAuthentication();
 app.MapControllers();
 
 app.UseOcelot().Wait();
