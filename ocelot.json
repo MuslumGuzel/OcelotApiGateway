@@ -1,7 +1,7 @@
 {
     "Routes": [
         {
-            "DownstreamPathTemplate": "/api/customer",
+            "DownstreamPathTemplate": "/api/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -13,7 +13,7 @@
                 "TtlSeconds": 30,
                 "Region": "customercaching"
             },
-            "UpstreamPathTemplate": "/customer-service/customer",
+            "UpstreamPathTemplate": "/customer-service/{everything}",
             "UpstreamHttpMethod": [
                 "Get"
             ],
@@ -24,7 +24,7 @@
             }            
         },
         {
-            "DownstreamPathTemplate": "/api/product",
+            "DownstreamPathTemplate": "/api/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -32,21 +32,10 @@
                     "Port": 7002
                 }
             ],
-            "UpstreamPathTemplate": "/product-service/product"
+            "UpstreamPathTemplate": "/product-service/{everything}"
         },
         {
-            "DownstreamPathTemplate": "/api/menu",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 7002
-                }
-            ],
-            "UpstreamPathTemplate": "/menu-service/menu"
-        },
-        {
-            "DownstreamPathTemplate": "/api/users",
+            "DownstreamPathTemplate": "/api/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -54,10 +43,10 @@
                     "Port": 8800
                 }
             ],
-            "UpstreamPathTemplate": "/user-service/user"
+            "UpstreamPathTemplate": "/user-service/{everything}"
         },
         {
-            "DownstreamPathTemplate": "/getposts",
+            "DownstreamPathTemplate": "/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -73,7 +62,7 @@
                 "Limit": 1,
                 "HttpStatusCode": 429
             },
-            "UpstreamPathTemplate": "/post-service/getposts",
+            "UpstreamPathTemplate": "/post-service/{everything}",
             "Key": "GetPost"
         },
         {
